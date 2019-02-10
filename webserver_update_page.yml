@@ -12,6 +12,8 @@
 - name: Deploy New Website to Webservers
   hosts: "{{ target_host_name }}*"
   gather_facts: no
+  vars:
+    - dbserver_ip_address: "10.68.158.101"
 
   tasks:
   - name: update dns resolve entries on server
