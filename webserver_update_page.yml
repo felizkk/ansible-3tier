@@ -1,6 +1,6 @@
 ---
 - name: Download the latest copy of website source codes
-  hosts: tower 
+  hosts: localhost 
   gather_facts: no
 
   tasks:

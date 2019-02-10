@@ -9,11 +9,10 @@
   tasks:
   - name: Install haproxy, ntp packages
     yum:
-      name: "{{ item }}"
+      name:
+        - haproxy
+        - ntp
       state: present
-    with_items:
-      - haproxy
-      - ntp
 
   - name: Ensure ntp, haproxy is enabled at boot and started
     service:

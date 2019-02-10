@@ -8,12 +8,11 @@
   tasks:
   - name: install mysql server, mysql-python, and ntp
     yum:
-      name: "{{ item }}"
+      name:
+        - mariadb-server
+        - MySQL-python
+        - ntp
       state: present
-    with_items:
-      - mariadb-server
-      - MySQL-python
-      - ntp
 
   - name: start mysql and ntp
     service:

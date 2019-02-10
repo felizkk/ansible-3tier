@@ -8,10 +8,8 @@
   tasks:
   - name: remove haproxy
     yum:
-      name: "{{ item }}"
+      name: haproxy
       state: present
-    with_items:
-      - haproxy
 
   - name: remove haproxy config file
     file:

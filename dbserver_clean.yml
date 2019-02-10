@@ -5,11 +5,10 @@
   tasks:
   - name: remove mysql server, mysql-python, and ntp
     yum:
-      name: "{{ item }}"
+      name:
+        - mariadb-server
+        - MySQL-python
       state: absent
-    with_items:
-      - mariadb-server
-      - MySQL-python
 
   - name: disable mysql port 3306
     firewalld:

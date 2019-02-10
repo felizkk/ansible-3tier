@@ -12,14 +12,13 @@
   # Have a look at the conditional syntax below, we have both and and or statements
   - name: install apache on RHEL7 or CentOS
     yum:
-      name: "{{ item }}"
+      name:
+        - httpd
+        - php
+        - php-mysql
+        - libsemanage-python
+        - ntp
       state: latest
-    with_items:
-      - httpd
-      - php
-      - php-mysql
-      - libsemanage-python
-      - ntp
     when: (ansible_distribution == "RedHat" and ansible_distribution_major_version == "7") or 
           (ansible_distribution == "CentOS" and ansible_distribution_major_version == "7")
     notify: restart apache
