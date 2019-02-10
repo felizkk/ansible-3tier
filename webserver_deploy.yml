@@ -1,6 +1,8 @@
 ---
 - name: Install/Update Webserver Packages
   hosts: "{{ target_host_name }}*"
+  become: yes
+  become_method: sudo
 
   vars:
     - http_port: 80
