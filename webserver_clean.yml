@@ -2,6 +2,8 @@
 - name: Remove Webserver Packages
   hosts: "{{ target_host_name }}*" 
   gather_facts: no
+  become: yes
+  become_method: sudo  
 
   vars:
     - http_port: 80

@@ -1,6 +1,8 @@
 ---
 - name: Remove HAProxy Packages
   hosts: "{{ target_proxy_name }}*"
+  become: yes
+  become_method: sudo  
 
   vars:
     - http_port: 80

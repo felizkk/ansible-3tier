@@ -2,6 +2,8 @@
 - name: Test HTTP Output from Desktop using Firefox
   hosts: "{{ target_host_name }}*" 
   gather_facts: yes
+  become: yes
+  become_method: sudo  
 
   tasks:
   - name: "calling Firefox. Please see desktop terminal"

@@ -1,6 +1,8 @@
 ---
 - name: Install/Update DBServer Packages 
   hosts: "{{ target_host_name }}*"
+  become: yes
+  become_method: sudo  
 
   vars:
     - ntpserver: "0.nz.pool.ntp.org"

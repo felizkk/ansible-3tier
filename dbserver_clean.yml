@@ -1,6 +1,8 @@
 ---
 - name: Remove DBServer Packages 
   hosts: "{{ target_host_name }}*"
+  become: yes
+  become_method: sudo  
 
   tasks:
   - name: remove mysql server, mysql-python
