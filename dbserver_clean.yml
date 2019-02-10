@@ -3,7 +3,7 @@
   hosts: "{{ target_host_name }}*"
 
   tasks:
-  - name: remove mysql server, mysql-python, and ntp
+  - name: remove mysql server, mysql-python
     yum:
       name:
         - mariadb-server
