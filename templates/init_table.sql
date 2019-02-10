@@ -11,4 +11,3 @@ LOCK TABLES `member` WRITE;
 INSERT INTO `member` (`firstname`, `surname`, `role`) VALUES ('Feliz','Karnadi', 'Solutions Architect');
 INSERT INTO `member` (`firstname`, `surname`, `role`) VALUES ('Grant','Du Preez', 'Business Development Manager');
 UNLOCK TABLES;
-
