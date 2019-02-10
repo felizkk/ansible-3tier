@@ -29,7 +29,6 @@ backend app-servers
     {%- for host in groups['cluster_Pineview-Cluster-RH'] %}
     {%- if 'centos7-webserver' in hostvars[host].name %}
     {%- set srvindex = srvindex + 1 %}
-      server server{{ srvindex }} {{ hostvars[host].ansible_ssh_host }}:{{ http_port }} cookie {{ hostvars[host].ansible_ssh_host }} check
+      server server{{ srvindex }} {{ hostvars[host].ansible_host }}:{{ http_port }} cookie {{ hostvars[host].ansible_host }} check
     {% endif %}
     {%- endfor %}
-    
