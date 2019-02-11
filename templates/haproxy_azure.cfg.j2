@@ -26,7 +26,7 @@ backend app-servers
     balance roundrobin
     option forwardfor
     {% set srvindex = 0 %}
-    {%- for host in groups['rhel75-group'] %}
+    {%- for host in groups['rhel-group'] %}
     {%- if 'webserver' in hostvars[host].name %}
     {%- set srvindex = srvindex + 1 %}
       server server{{ srvindex }} {{ hostvars[host].ansible_ssh_host }}:{{ http_port }} cookie {{ hostvars[host].ansible_ssh_host }} check
