@@ -1,6 +1,7 @@
 ---
 - name: Download the latest copy of website source codes
-  hosts: localhost 
+  hosts: localhost
+  connection: local
   gather_facts: no
 
   tasks:
