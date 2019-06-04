@@ -5,6 +5,10 @@
   gather_facts: no
 
   tasks:
+  - name: clear websource directory
+    file: 
+      path: "/tmp/websource"
+      state: absent  
   - name: get the latest webpage source from git
     git:
       repo: "https://github.com/felizkk/php-website-demo.git"
