@@ -14,23 +14,13 @@
       repo: "https://github.com/felizkk/php-website-demo.git"
       dest: "/tmp/websource"
 
-- name: Deploy New Website to Webservers
+- name: Display Error Page on Webservers
   hosts: "{{ target_host_name }}*"
   gather_facts: no
   become: yes
   become_method: sudo
     
-  vars:
-    - dbserver_ip_address: "10.68.158.101"
-
   tasks:
-  - name: update dns resolve entries on server
-    lineinfile:
-      path: /etc/hosts
-      regexp: dbserver1
-      line: "{{ dbserver_ip_address }} dbserver1"
-      state: present
-
   - name: clear html directory
     file: 
       path: /var/www/html
@@ -41,13 +31,13 @@
 
   # Important Note: to enable Tower to access /tmp, the Job Isolation feature must be disabled
   # On Tower v3.3.0 : Settings - Jobs - Job Isolation - Off
-  - name: update index php file
+  - name: copy error page index php file
     template:
-      src: "/tmp/websource/website-{{ website_version }}/jinja/index.php.j2"
+      src: "/tmp/websource/website-error/jinja/index.php.j2"
       dest: "/var/www/html/index.php"
 
   - name: copy the rest of html files
     copy:
-      src: "/tmp/websource/website-{{ website_version }}/static/"
+      src: "/tmp/websource/website-error/static/"
       dest: /var/www/html/
 ...

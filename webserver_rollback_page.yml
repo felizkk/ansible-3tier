@@ -1,5 +1,5 @@
 ---
-- name: Download the previous copy of website source codes
+- name: Download website source codes
   hosts: localhost
   connection: local
   gather_facts: no
