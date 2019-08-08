@@ -13,7 +13,7 @@
   #  delegate_to: localhost  
 
   - name: http fetch 1 - get Automation
-    shell: "http GET http://{{ ansible_default_ipv4.address }} -b | grep 'Automation' | head -1 | awk '{print $2}'"
+    shell: "curl -s http://{{ ansible_default_ipv4.address }} | grep 'Automation' | head -1 | awk '{print $2}'"
     register: body_automation
     delegate_to: localhost
 
@@ -21,12 +21,12 @@
   #    var: body_automation
   #  delegate_to: localhost
 
-  #- debug:
-  #    msg: "found Automation word: {{ body_automation.stdout_lines[0] }}"
-  #  delegate_to: localhost
+  - debug:
+      msg: "found Automation word: {{ body_automation.stdout_lines[0] }}"
+    delegate_to: localhost
 
   - name: http fecth 2 - get footer
-    shell: "http GET http://{{ ansible_default_ipv4.address }} -b | grep footer | sed -e 's/<footer>/ /g' | sed -e 's/<br/ /g' | awk '{print $1}'"
+    shell: "curl -s http://{{ ansible_default_ipv4.address }} | grep footer | sed -e 's/<footer>/ /g' | sed -e 's/<br/ /g' | awk '{print $1}'"
     register: footer_hostname
     delegate_to: localhost
 
@@ -34,9 +34,9 @@
   #    var: footer_hostname
   #  delegate_to: localhost
 
-  #- debug:
-  #    msg: "found footer: {{ footer_hostname.stdout_lines[0] }} , compare to inventory: {{ inventory_hostname }}"
-  #  delegate_to: localhost
+  - debug:
+      msg: "found footer: {{ footer_hostname.stdout_lines[0] }} , compare to inventory: {{ inventory_hostname }}"
+    delegate_to: localhost
 
   - name: produce fail result if one of the 2 output checks fails
     fail:
