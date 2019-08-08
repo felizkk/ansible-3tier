@@ -10,7 +10,6 @@
   - name: check HTTP status 200 from GET
     uri:
       url: "http://{{ website_ip }}"
-    delegate_to: localhost
 
   - name: check if the word Ansible for Everyone is in the page contents
     uri:
@@ -18,7 +17,6 @@
       return_content: yes
     register: weboutput1
     failed_when: "'Automation for Everyone' not in weboutput1.content"
-    delegate_to: localhost
 
   - name: check if the word Ansible Workshops is in the page contents
     uri:
@@ -26,5 +24,4 @@
       return_content: yes
     register: weboutput2
     failed_when: "'Automation for Everyone' not in weboutput2.content"
-    delegate_to: localhost
 ...
