@@ -1,0 +1,150 @@
+---
+- name: Download website source codes
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    - websource_path: "/tmp/websource"
+
+  tasks:
+  - name: clear websource directory
+    file: 
+      path: "{{ websource_path }}"
+      state: absent  
+  - name: get the latest webpage source from git
+    git:
+      repo: "https://github.com/felizkk/php-website-demo.git"
+      dest: "{{ websource_path }}"
+
+- name: Deploy LAMP Test Server Packages
+  hosts: "{{ target_host_name }}*"
+  become: yes
+  become_method: sudo
+
+  vars:
+    - http_port: 80
+    - apache_max_keep_alive_requests: 115
+    - website_version: "v3"
+    - apache_environment: "Single LAMP Test"
+    - apache_test_message: "Just a Test Server"
+    - websource_path: "/tmp/websource"
+
+  tasks:
+  # Install/Update Webserver packages
+  - name: install web and db packages
+    yum:
+      name:
+        - httpd
+        - php
+        - php-mysql
+        - libsemanage-python
+        - mariadb-server
+        - MySQL-python
+      state: latest
+    notify: restart apache
+
+  - name: start apache
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+
+  # Update Apache Config
+  - name: update apache config file
+    template:
+      src: templates/httpd.conf.j2
+      dest: /etc/httpd/conf/httpd.conf
+    notify: restart apache
+
+  # Linux Firewall Configuration
+  - name: enable http and mysql ports
+    firewalld:
+      port: "{{ item }}/tcp"
+      state: enabled
+      permanent: true
+    with_items:
+      - "{{ http_port }}"
+      - 3306
+    notify: restart firewall
+
+  # MySQL Database Configuration
+  - name: start mysql
+    service:
+      name: mariadb
+      state: started
+      enabled: yes
+  
+  - name: create a mysql user named ansible @ %
+    mysql_user:
+      name: ansible
+      password: redhat
+      host: "%"
+      priv: "*.*:ALL"
+      state: present
+
+  - name: create a mysql user named ansible @ localhost
+    mysql_user:
+      name: ansible
+      password: redhat
+      host: "localhost"
+      priv: "*.*:ALL"
+      state: present
+
+  - name: create database named theredteam
+    mysql_db:
+      name: theredteam
+      state: present
+
+  # Create DB Initial Entries
+  - name: copy sql file to target vm
+    copy:
+      src: templates/init_table.sql
+      dest: /tmp/init_table.sql
+
+  - name: create initial database table and entries
+    mysql_db:
+      name: theredteam
+      login_user: ansible
+      login_password: redhat
+      login_unix_socket: "/var/lib/mysql/mysql.sock"
+      config_file: "/etc/my.cnf"
+      state: import
+      target: /tmp/init_table.sql
+
+  - name: test table output
+    command: 'mysql -uansible -predhat theredteam -e "select * from member;"'
+    register: tableoutput
+
+  - name: display table output
+    debug:
+      var: tableoutput.stdout_lines  
+
+  # Update Website Files with New Version
+  - name: update index php file
+    template:
+      src: "{{ websource_path }}/website-{{ website_version }}/jinja/index.php.j2"
+      dest: "/var/www/html/index.php"
+
+  - name: copy the rest of html files
+    copy:
+      src: "{{ websource_path }}/website-{{ website_version }}/static/"
+      dest: /var/www/html/
+
+  - name: update dbserver dns resolve entry on server
+    replace:
+      path: /var/www/html/index.php
+      regexp: dbserver1
+      replace: localhost
+
+  # Notification Handlers
+  handlers:
+  - name: restart firewall
+    service:
+      name: firewalld
+      state: restarted
+  - name: restart apache
+    service:
+      name: httpd
+      state: restarted
+...
