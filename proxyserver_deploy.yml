@@ -14,6 +14,8 @@
       name:
         - haproxy
         - ntp
+        - firewalld
+        - python-firewall        
       state: present
 
   - name: Ensure ntp, haproxy is enabled at boot and started
