@@ -1,6 +1,6 @@
 ---
 - name: Test HTTP Output
-  hosts: "{{ target_host_name }}*" 
+  hosts: localhost
   gather_facts: yes
 
   vars:
