@@ -6,7 +6,8 @@
 
   vars:
     - http_port: 80
-    - ntpserver: 0.nz.pool.ntp.org    
+    - ntpserver: 0.nz.pool.ntp.org
+    - webserver_environment: "aws_syd"
 
   tasks:
   - name: Install haproxy, ntp packages
