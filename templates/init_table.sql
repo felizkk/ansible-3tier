@@ -8,6 +8,6 @@ CREATE TABLE `member` (
 ) ENGINE=MyISAM AUTO_INCREMENT=101 DEFAULT CHARSET=latin1;
 
 LOCK TABLES `member` WRITE;
-INSERT INTO `member` (`firstname`, `surname`, `role`) VALUES ('Feliz','Karnadi', 'Solutions Architect');
-INSERT INTO `member` (`firstname`, `surname`, `role`) VALUES ('Grant','Du Preez', 'Business Development Manager');
+INSERT INTO `member` (`firstname`, `surname`, `role`) VALUES ('Feliz','Karnadi', 'Red Hat Technical Sales');
+INSERT INTO `member` (`firstname`, `surname`, `role`) VALUES ('Jono','How', 'Client Partner Executive');
 UNLOCK TABLES;
