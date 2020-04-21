@@ -22,6 +22,9 @@
     
   vars:
     - dbserver_ip_address: "10.68.158.101"
+    - rollback_version: "v1"
+    - apache_environment: "Demo"
+    - apache_test_message: "This website has been rolled back"
 
   tasks:
   - name: update dns resolve entries on server
