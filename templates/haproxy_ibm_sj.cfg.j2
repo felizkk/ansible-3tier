@@ -29,6 +29,5 @@ backend app-servers
     {%- for host in groups['ibm-sj-webserver'] %}
     {%- set srvindex = srvindex + 1 %}
       server server{{ srvindex }} {{ hostvars[host].ansible_host }}:{{ http_port }} cookie {{ hostvars[host].ansible_host }} check
-    {% endif %}
-    {%- endfor %}
+    {% endfor %}
     
