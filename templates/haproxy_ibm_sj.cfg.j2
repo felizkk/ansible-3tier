@@ -27,7 +27,6 @@ backend app-servers
     option forwardfor
     {% set srvindex = 0 %}
     {%- for host in groups['ibm-sj-webserver'] %}
-    {%- if 'webserver' in hostvars[host].name %}
     {%- set srvindex = srvindex + 1 %}
       server server{{ srvindex }} {{ hostvars[host].ansible_host }}:{{ http_port }} cookie {{ hostvars[host].ansible_host }} check
     {% endif %}
