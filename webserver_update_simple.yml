@@ -1,0 +1,41 @@
+---
+- name: Download website source codes
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: clear websource directory
+    file: 
+      path: "/tmp/websource"
+      state: absent  
+  - name: get the latest webpage source from git
+    git:
+      repo: "https://github.com/felizkk/php-website-demo.git"
+      dest: "/tmp/websource"
+
+
+- name: Deploy New Website to Webservers
+  hosts: "{{ target_host_name }}*"
+  gather_facts: no
+  become: yes
+  become_method: sudo
+
+  # For fimbo1,2,3 only, no jinja templates needed
+  vars:
+    - website_version: "fimbo-1"
+
+  tasks:
+  - name: clear html directory
+    file: 
+      path: /var/www/html
+      state: "{{ item }}"
+    with_items:
+      - absent
+      - directory
+
+  - name: copy website files
+    copy:
+      src: "/tmp/websource/{{ website_version }}/"
+      dest: /var/www/html/
+...
